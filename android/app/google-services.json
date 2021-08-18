@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "458879424325",
+    "project_id": "arav-lodging",
+    "storage_bucket": "arav-lodging.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:458879424325:android:8a2bd4b24e3ba66dae902c",
+        "android_client_info": {
+          "package_name": "com.lodging.arav"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "458879424325-hmv30sam63ho53q39el72lvm5dlbnspq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lodging.arav",
+            "certificate_hash": "37f5239ba44ebdc18c4c72b23b2abdab5722b1f4"
+          }
+        },
+        {
+          "client_id": "458879424325-jiniddea6g4j0mn53p1snor7e7trdiek.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUc-idT0hU4MFkvNdswrw93uRz15-urGo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "458879424325-jiniddea6g4j0mn53p1snor7e7trdiek.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
