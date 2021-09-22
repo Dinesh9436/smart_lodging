@@ -190,10 +190,10 @@ class _BillingState extends State<Billing> {
                                   }).map(
                                     ((element) {
                                       int totalAmount = 0;
-                                      totals.add(int.parse(element['rent']));
-                                      totalAmount =
-                                          totals.reduce((a, b) => a + b);
-                                      print('------$totalAmount');
+                                      // totals.add(int.parse(element['rent']));
+                                      // totalAmount =
+                                      //     totals.reduce((a, b) => a + b);
+                                      // print('------$totalAmount');
                                       return DataRow(
                                         cells: <DataCell>[
                                           DataCell(Text(element[
@@ -236,10 +236,10 @@ class _BillingState extends State<Billing> {
                                 : data.values.map(
                                     ((element) {
                                       int totalAmount = 0;
-                                      totals.add(int.parse(element['rent']));
-                                      totalAmount =
-                                          totals.reduce((a, b) => a + b);
-                                      print('------$totalAmount');
+                                      //  totals.add(int.parse(element['rent']));
+                                      // totalAmount =
+                                      //     totals.reduce((a, b) => a + b);
+                                      // print('------$totalAmount');
                                       return DataRow(
                                         cells: <DataCell>[
                                           DataCell(Text(element[

@@ -127,20 +127,18 @@ class RegisterRoomState extends State<RegisterRoom> {
       });
     });
 
-    
-
     //print(existingList);
   }
+
   Future<void> getsmsNumber() async {
-      var db = FirebaseDatabase.instance.reference().child("sms");
-      await db.once().then((DataSnapshot snapshot) {
-        var value = snapshot.value;
-        setState(() {
-          smsNum = "+91" + value['number'];
-        });
+    var db = FirebaseDatabase.instance.reference().child("sms");
+    await db.once().then((DataSnapshot snapshot) {
+      var value = snapshot.value;
+      setState(() {
+        smsNum = "+91" + value['number'];
       });
-      
-    }
+    });
+  }
 
   Future getImage() async {
     final pickedFile =
@@ -361,6 +359,7 @@ class RegisterRoomState extends State<RegisterRoom> {
               padding: const EdgeInsets.only(top: 16.0, right: 8.0, left: 8.0),
               child: TypeAheadFormField(
                 textFieldConfiguration: TextFieldConfiguration(
+                    controller: _nameController,
                     onChanged: (String val) {
                       setState(() {
                         name = val;
@@ -397,6 +396,11 @@ class RegisterRoomState extends State<RegisterRoom> {
                   );
                 },
                 onSuggestionSelected: (suggestion) {
+                  _nameController.value = _nameController.value.copyWith(
+                    text: _nameController.text,
+                    selection: TextSelection.collapsed(
+                        offset: _nameController.value.selection.baseOffset),
+                  );
                   // This when someone click the items
                   setState(() {
                     existing = true;
@@ -410,16 +414,16 @@ class RegisterRoomState extends State<RegisterRoom> {
                       if (val["name"].toString().toLowerCase() ==
                           suggestion.toString().toLowerCase()) {
                         setState(() {
-                          name = val['name'];
-                          nationality = val['phone no'];
-                          address = val['address'];
-                          where = val['where'];
-                          reason = val['reason'];
-                          days = val['days'];
-                          place = val['document'];
+                          name = val['name'] ?? '';
+                          nationality = val['phone no'] ?? '';
+                          address = val['address'] ?? '';
+                          where = val['where'] ?? '';
+                          reason = val['reason'] ?? '';
+                          days = val['days'] ?? '';
+                          place = val['document'] ?? '';
                           uploadedURL = val['imageURL'].toList();
 
-                          document = val['document'];
+                          document = val['document'] ?? '';
                         });
                       }
                     });
@@ -877,16 +881,28 @@ class RegisterRoomState extends State<RegisterRoom> {
               textColor: Colors.white,
               splashColor: Color(Constants.FACEBOOK_BUTTON_COLOR),
               onPressed: () async {
+                print(uploadedURL);
                 var formattedDate;
+                String image1 = uploadedURL[0] ??
+                    "https://upload.wikimedia.org/wikipedia/en/thumb/9/98/Blank_button.svg/1200px-Blank_button.svg.png";
 
+                String image2 = uploadedURL.length > 1
+                    ? uploadedURL[1]
+                    : "https://upload.wikimedia.org/wikipedia/en/thumb/9/98/Blank_button.svg/1200px-Blank_button.svg.png";
+
+                String image3 = uploadedURL.length > 2
+                    ? uploadedURL[2]
+                    : "https://upload.wikimedia.org/wikipedia/en/thumb/9/98/Blank_button.svg/1200px-Blank_button.svg.png";
+
+                String image4 = uploadedURL.length > 3
+                    ? uploadedURL[3]
+                    : "https://upload.wikimedia.org/wikipedia/en/thumb/9/98/Blank_button.svg/1200px-Blank_button.svg.png";
+                setState(() {});
                 print('-----------$smsNum');
                 if (agree! && uploadedURL.isNotEmpty) {
-                  var formattedDate;
-
-                  setState(() {
-                    formattedDate =
-                        DateFormat('dd/MM/yyyy, hh:mm a').format(selectedDate!);
-                  });
+                  var formatter = new DateFormat('dd-MM-yyyy kk:mm:a');
+                  // var parsedDate = DateTime.parse(selectedDate);
+                  String formattedDate = formatter.format(selectedDate!);
                   final SmsSendStatusListener listener = (SendStatus status) {
                     print(status);
 
@@ -898,23 +914,21 @@ class RegisterRoomState extends State<RegisterRoom> {
                       isMultipart: true,
                       message:
                           "रूम नं : ${bookedRoom!.roomNo} \n ग्राहकाचे नाव : $name \n वेळ : $formattedDate.");
-                  for (var i = 0; i < uploadedURL.length; i++) {
-                    var formatter = new DateFormat('dd-MM-yyyy kk:mm:a');
-                    // var parsedDate = DateTime.parse(selectedDate);
-                    String formattedDate = formatter.format(selectedDate!);
-                    await Printing.layoutPdf(
-                        onLayout: (PdfPageFormat format) async =>
-                            await Printing.convertHtml(
-                              format: format,
-                              html:
-                                  '<html><body><p style="font-size:18;">नाव : $name<br>सोबत आलेल्या व्यक्तीचे नाव: $name1<br>रूम नं : ${widget.room!.roomNo.toString()}<br>फोन नं : $nationality<br>पत्ता : $address<br>तारीख आणि वेळ : $formattedDate<br>कोठून आला? :$where<br>कारण : $reason<br>किती दिवस राहणार? :$days<br>कोठे जाणार तो पत्ता ? :$place<br>ओळखपत्र : $document<br><br><br><img src="${uploadedURL[i]}" width="200" height="200" ><br><br>आम्ही दोघेही एकाच विचाराचे असलेने व सज्ञान असलेने एकमेकांचे पसंतीने आम्हापैकी कोणावरही  दडपण किंवा जोरजुलुम केलेला नाही . आम्ही लॉजची रूम भाड्याने घेत असतेवेळी व्यवस्थापक यांना वय पूर्ण असलेले ओळखपत्र दाखवलेले आहे. आम्ही एकमेकांच्या संमतीने लॉजमध्ये आलेलो आहोत .त्यामुळे या गोष्टीस लॉज मालक /चालक/व्यवस्थापक जबाबदार असणार नाहीत /त्यांचा काहीही दोष नाही .</p></body></html>', // pass generated html here
-                            ));
-                  }
+
+                  await Printing.layoutPdf(
+                      onLayout: (PdfPageFormat format) async =>
+                          await Printing.convertHtml(
+                            format: format,
+                            html:
+                                '<html><body><p style="font-size:18;">नाव : $name<br>सोबत आलेल्या व्यक्तीचे नाव: $name1<br>रूम नं: ${widget.room!.roomNo.toString()}<br>फोन नं : $nationality<br>पत्ता : $address<br>तारीख आणि वेळ: $formattedDate<br>कोठून आला? :$where<br>कारण : $reason<br>किती दिवस राहणार? :$days<br>कोठे जाणार तो पत्ता ?:$place<br>ओळखपत्र : $document<br><br><br><img src="$image1" width="200" height="200" style="padding: 10px;" ><img src="$image2" width="200" height="200" style="padding: 10px;"><img src="$image3" width="200" height="200" style="padding: 10px;"><img src="$image4" width="200" height="200" style="padding: 10px;"><br><br>आम्ही दोघेही एकाच विचाराचे असलेने व सज्ञान असलेने एकमेकांचे पसंतीने आम्हापैकी कोणावरही  दडपण किंवा जोरजुलुम केलेला नाही . आम्ही लॉजची रूम भाड्याने घेत असतेवेळी व्यवस्थापक यांना वय पूर्ण असलेले ओळखपत्र दाखवलेले आहे. आम्ही एकमेकांच्या संमतीने लॉजमध्ये आलेलो आहोत .त्यामुळे या गोष्टीस लॉज मालक /चालक/व्यवस्थापक जबाबदार असणार नाहीत /त्यांचा काहीही दोष नाही .</p></body></html>', // pass generated html here
+                          ));
+
                   showLoaderDialog(context);
 
                   await _sendToServer(context).then((value) {
-                    Navigator.pop(context);
                     _image = null;
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/home', (Route<dynamic> route) => false);
                   });
                 } else {
                   uploadedURL.isEmpty

@@ -21,18 +21,18 @@ class _TableExample extends State<Pessangers> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController edit = new TextEditingController();
 
-  String? address,
-      dateA,
-      days,
-      document,
-      imageURL,
-      name,
-      name2,
-      phone,
-      place,
-      reason,
-      roomNo,
-      where;
+  String address = '';
+  String dateA = '';
+  String days = '';
+  String document = '';
+  String imageURL = '';
+  String name = '';
+  String name2 = '';
+  String phone = '';
+  String place = '';
+  String reason = '';
+  String roomNo = '';
+  String where = '';
   final pdf = pw.Document();
 
   displaydialog(String type) {
@@ -505,19 +505,37 @@ class _TableExample extends State<Pessangers> {
                               },
                             ),
                           );
-                          for (var i = 0; i < data['imageURL'].length; i++) {
-                            var formatter =
-                                new DateFormat('dd-MM-yyyy kk:mm:a');
+
+                          String image1 = data['imageURL'][0] ??
+                              "https://upload.wikimedia.org/wikipedia/en/thumb/9/98/Blank_button.svg/1200px-Blank_button.svg.png";
+
+                          String image2 = data['imageURL'].length > 1
+                              ? data['imageURL'][1]
+                              : "https://upload.wikimedia.org/wikipedia/en/thumb/9/98/Blank_button.svg/1200px-Blank_button.svg.png";
+
+                          String image3 = data['imageURL'].length > 2
+                              ? data['imageURL'][2]
+                              : "https://upload.wikimedia.org/wikipedia/en/thumb/9/98/Blank_button.svg/1200px-Blank_button.svg.png";
+
+                          String image4 = data['imageURL'].length > 3
+                              ? data['imageURL'][3]
+                              : "https://upload.wikimedia.org/wikipedia/en/thumb/9/98/Blank_button.svg/1200px-Blank_button.svg.png";
+                          setState(() {});
+
+                          String formattedDate = '';
+                          var formatter = new DateFormat('dd-MM-yyyy kk:mm:a');
+                          if (data['dateA'] != null) {
                             var parsedDate = DateTime.parse(data['dateA']);
-                            String formattedDate = formatter.format(parsedDate);
-                            await Printing.layoutPdf(
-                                onLayout: (PdfPageFormat format) async =>
-                                    await Printing.convertHtml(
-                                      format: format,
-                                      html:
-                                          '<html><body><p style="font-size:18;">नाव : ${data['name']}<br>सोबत आलेल्या व्यक्तीचे नाव: ${data['name2']}<br>रूम नं : ${data['roomNo']}<br>फोन नं : ${data['phone no']}<br>पत्ता : ${data['address']}<br>तारीख आणि वेळ : $formattedDate<br>कोठून आला? :${data['place']}<br>कारण : ${data['reason']}<br>किती दिवस राहणार? :${data['days']}<br>कोठे जाणार तो पत्ता ? :${data['where']}<br>ओळखपत्र : ${data['document']}<br><br><br><img src="${data['imageURL'][i]}" width="200" height="200" ><br><br>आम्ही दोघेही एकाच विचाराचे असलेने व सज्ञान असलेने एकमेकांचे पसंतीने आम्हापैकी कोणावरही  दडपण किंवा जोरजुलुम केलेला नाही . आम्ही लॉजची रूम भाड्याने घेत असतेवेळी व्यवस्थापक यांना वय पूर्ण असलेले ओळखपत्र दाखवलेले आहे. आम्ही एकमेकांच्या संमतीने लॉजमध्ये आलेलो आहोत .त्यामुळे या गोष्टीस लॉज मालक /चालक/व्यवस्थापक जबाबदार असणार नाहीत /त्यांचा काहीही दोष नाही .</p></body></html>', // pass generated html here
-                                    ));
+                            formattedDate = formatter.format(parsedDate);
                           }
+
+                          await Printing.layoutPdf(
+                              onLayout: (PdfPageFormat format) async =>
+                                  await Printing.convertHtml(
+                                    format: format,
+                                    html:
+                                        '<html><body><p style="font-size:18;">नाव : ${data['name'] ?? ''}<br>सोबत आलेल्या व्यक्तीचे नाव: ${data['name2'] ?? ''}<br>रूम नं : ${data['roomNo'] ?? ''}<br>फोन नं : ${data['phone no'] ?? ''}<br>पत्ता : ${data['address'] ?? ''}<br>तारीख आणि वेळ : $formattedDate<br>कोठून आला? :${data['place'] ?? ''}<br>कारण : ${data['reason'] ?? ''}<br>किती दिवस राहणार? :${data['days'] ?? ''}<br>कोठे जाणार तो पत्ता ? :${data['where'] ?? ''}<br>ओळखपत्र : ${data['document'] ?? ''}<br><br><br><img src="$image1" width="200" height="200" style="padding: 10px;" ><img src="$image2" width="200" height="200" style="padding: 10px;" ><img src="$image3" width="200" height="200" style="padding: 10px;" ><img src="$image4" width="200" height="200" style="padding: 10px;" ><br><br>आम्ही दोघेही एकाच विचाराचे असलेने व सज्ञान असलेने एकमेकांचे पसंतीने आम्हापैकी कोणावरही  दडपण किंवा जोरजुलुम केलेला नाही . आम्ही लॉजची रूम भाड्याने घेत असतेवेळी व्यवस्थापक यांना वय पूर्ण असलेले ओळखपत्र दाखवलेले आहे. आम्ही एकमेकांच्या संमतीने लॉजमध्ये आलेलो आहोत .त्यामुळे या गोष्टीस लॉज मालक /चालक/व्यवस्थापक जबाबदार असणार नाहीत /त्यांचा काहीही दोष नाही .</p></body></html>', // pass generated html here
+                                  ));
 
                           // Directory documentDirectory =
                           //     await getApplicationDocumentsDirectory();

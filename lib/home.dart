@@ -26,8 +26,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   final List<Room>? rooms, booked;
-  final String? role;
-  HomeScreen({Key? key, this.rooms, this.booked, this.role}) : super(key: key);
+
+  HomeScreen({Key? key, this.rooms, this.booked}) : super(key: key);
   @override
   HomeScreenState createState() => HomeScreenState();
 }
@@ -321,16 +321,12 @@ class HomeScreenState extends State<HomeScreen> {
                 tileColor: Colors.indigo,
                 title: Center(
                   child: Text(
-                    'SMART LODGING',
+                    'ARAV LODGING',
                     style: TextStyle(
                         color: Colors.white,
                         fontFamily: "Audiowide",
                         fontSize: MediaQuery.of(context).size.width * 0.05),
                   ),
-                ),
-                leading: Container(
-                  height: 50,
-                  child: Image.asset('assets/app-icon.png'),
                 ),
               ),
               ListTile(
@@ -437,11 +433,8 @@ class HomeScreenState extends State<HomeScreen> {
                 onTap: () async {
                   prefs.remove('email');
 
-                  await Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MyHomePage(),
-                      ));
+                  await Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/signin', (Route<dynamic> route) => false);
                 },
               ),
               // use this
@@ -742,10 +735,7 @@ class HomeScreenState extends State<HomeScreen> {
                                                                           Navigator
                                                                               .push(
                                                                             context,
-                                                                            MaterialPageRoute(
-                                                                                builder: (context) => HomeScreen(
-                                                                                      role: widget.role,
-                                                                                    )),
+                                                                            MaterialPageRoute(builder: (context) => HomeScreen()),
                                                                           ));
                                                                 });
                                                                 // Navigator.of(

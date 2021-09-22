@@ -258,13 +258,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                         _passwordController.text == pass[i]) {
                                       await prefs.setString('email', emails[i]);
                                       await prefs.setString('role', role[i]);
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => HomeScreen(
-                                                  role: role[i],
-                                                )),
-                                      );
+
+                                      Navigator.of(context)
+                                          .pushNamedAndRemoveUntil('/home',
+                                              (Route<dynamic> route) => false);
                                     }
                                   }
 
